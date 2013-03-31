@@ -1,0 +1,59 @@
+.TH BACKUPPURGE "1" "March 2013" "backuppurge 1.0.0" "User Commands"
+.SH NAME
+backuppurge \- Selectively purge daily full backups in a directory
+.SH USAGE
+.B backuppurge
+[\-d \fIDAYS\fR] [\-m \fIMONTHS\fR] [\-y \fIYEARS\fR] [\-0] [\-V] DIRECTORY
+.SH DESCRIPTION
+.PP
+Lists files in that should be purged in a backup strategy where daily backups
+are kept for DAYS days, monthly backups for MONTHS months and yearly backups
+for YEARS years. Monthly and yearly backups are always the oldest possible
+daily backup (e.g. first of month and first of year that is available).
+.PP
+Files are expected to have their date embedded as YYYY\-MM\-DD somewhere in
+the filename, e.g. homedir\-2013\-03\-31.tgz
+.PP
+For monthly and yearly backups, the first day available will be kept (e.g.
+January 1st for yearly, but if that is not available, January 2nd will be
+kept, etc..).
+.PP
+This program can be used together with xargs(1) from GNU findutils:
+.IP
+backuppurge \fB\-\-print0\fR /var/backups/ | xargs \fB\-0\fR rm
+.PP
+Only files directly in the specified directory will be searched (in the
+above example, /var/backups/homedir\-2013\-03\-31.tgz will be considered,
+but not /var/backups/etc/etc\-2013\-03\-31.tgz). This prevents accidental
+deletion of files. For the same reason, <directory> is mandatory.
+.PP
+This script assumes daily backups are FULL backups, not incremental.
+.SH ARGUMENTS
+.TP
+DIRECTORY
+Directory to look for backup files
+.TP
+\fB\-d\fR DAYS, \fB\-\-days\fR DAYS
+Number of days to keep
+.TP
+\fB\-m\fR MONTHS, \fB\-\-months\fR MONTHS
+Number of months to keep (0 to disable)
+.TP
+\fB\-y\fR YEARS, \fB\-\-years\fR YEARS
+Number of years to keep (0 to disable)
+.TP
+\fB\-0\fR, \fB\-\-print0\fR
+Output filenames separated by NUL
+.TP
+\fB\-V\fR, \fB\-\-verbose\fR
+Verbose output of decisions to stderr
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+show help message and exit
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+show program's version number and exit
+.SH WEBSITE
+http://thp.io/2013/backuppurge/
+.SH AUTHOR
+Thomas Perl <m@thp.io>
