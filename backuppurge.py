@@ -118,10 +118,10 @@ class PurgeList:
             for filename in self.filenames]))
 
         if len(prefixes) != 1:
-            raise MixedFilenames('Non-unique prefixes: {}'.format(prefixes))
+            raise MixedFilenames('Non-unique prefixes: {0}'.format(prefixes))
 
         if len(postfixes) != 1:
-            raise MixedFilenames('Non-unique postfixes: {}'.format(postfixes))
+            raise MixedFilenames('Non-unique postfixes: {0}'.format(postfixes))
 
     def keep(self, filename, kind):
         """Mark filename to be kept"""
@@ -137,10 +137,10 @@ class PurgeList:
     def get_all(self, year, month=None, day=None):
         """Get all backups for a specific year"""
 
-        month_re = r'{:02d}'.format(month) if month else r'\d{2}'
-        day_re = r'{:02d}'.format(day) if day else r'\d{2}'
+        month_re = r'{0:02d}'.format(month) if month else r'\d{2}'
+        day_re = r'{0:02d}'.format(day) if day else r'\d{2}'
 
-        regex = re.compile(r'{:04d}-{:s}-{:s}'.format(year, month_re, day_re))
+        regex = re.compile(r'{0:04d}-{1:s}-{2:s}'.format(year, month_re, day_re))
 
         return sorted(filter(regex.search, self.filenames))
 
@@ -188,11 +188,11 @@ class PurgeList:
     def keep_monthly(self, months):
         for year, month in self.recent_months(months):
             self.keep(self.get_first(year, month),
-                    'monthly ({}-{:02d})'.format(year, month))
+                    'monthly ({0}-{1:02d})'.format(year, month))
 
     def keep_yearly(self, years):
         for year in self.recent_years(years):
-            self.keep(self.get_first(year), 'yearly ({})'.format(year))
+            self.keep(self.get_first(year), 'yearly ({0})'.format(year))
 
     def get_filenames(self):
         return self.purge

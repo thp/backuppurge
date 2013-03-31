@@ -36,8 +36,7 @@ import backuppurge
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=backuppurge.__doc__.strip(),
-            formatter_class=argparse.RawDescriptionHelpFormatter,
-            version=backuppurge.__version__)
+            formatter_class=argparse.RawDescriptionHelpFormatter)
 
     parser.add_argument('DIRECTORY', type=str,
             help='Directory to look for backup files')
@@ -51,6 +50,9 @@ if __name__ == '__main__':
             help='Output filenames separated by NUL')
     parser.add_argument('-V', '--verbose', action='store_true', default=False,
             help='Verbose output of decisions to stderr')
+    parser.add_argument('-v', '--version', action='version',
+            version=backuppurge.__version__,
+            help='show version number and exit')
 
     args = parser.parse_args()
 

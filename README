@@ -27,7 +27,7 @@ Usage information can be found in the `manual page`_.
 Dependencies
 ------------
 
-* Python_ 3.x OR Python 2.7
+* Python_ 3.2 OR Python >= 2.6 with argparse
 * *Optional:* Nose_ for running unit tests
 
 .. _Python: http://www.python.org/
