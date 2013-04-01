@@ -207,5 +207,7 @@ def main(directory, days, months, years, separator):
     purge_list.keep_monthly(months)
     purge_list.keep_yearly(years)
 
-    print(separator.join(purge_list.get_filenames()), end=separator)
+    purge_files = purge_list.get_filenames()
+    if purge_files:
+        print(separator.join(purge_files), end=separator)
 
