@@ -67,7 +67,7 @@ import os
 __author__ = 'Thomas Perl <m@thp.io>'
 __license__ = 'Simplified BSD License'
 __url__ = 'http://thp.io/2013/backuppurge/'
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 
 
 class MixedFilenames(BaseException):
@@ -89,7 +89,8 @@ def find_backups(directory):
     """
     Find backup files in directory
     """
-    return filter(os.path.isfile, os.listdir(directory))
+    return filter(os.path.isfile, map(lambda filename:
+        os.path.join(directory, filename), os.listdir(directory)))
 
 
 class PurgeList:
