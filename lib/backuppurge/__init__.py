@@ -51,7 +51,11 @@ above example, ``/var/backups/homedir-2013-03-31.tgz`` will be considered,
 but not ``/var/backups/etc/etc-2013-03-31.tgz``). This prevents accidental
 deletion of files.
 
-This script assumes daily backups are FULL backups, not incremental.
+This script assumes daily backups are FULL backups, not incremental. For
+example, a full daily backup of your ``/etc`` can be created by adding
+(``crontab -e``) a command like the following to your crontab(5) file::
+
+    tar czf /var/backups/etc/etc-$(date +%F).tgz /etc
 """
 
 

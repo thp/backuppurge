@@ -51,7 +51,7 @@ This program can be used together with xargs(1) from GNU findutils:
 .sp
 .nf
 .ft C
-backuppurge \-\-print0 /var/backups/ | xargs \-0 rm
+backuppurge \-\-print0 /var/backups/ | xargs \-r \-0 rm
 .ft P
 .fi
 .sp
@@ -60,7 +60,15 @@ above example, \fB/var/backups/homedir\-2013\-03\-31.tgz\fP will be considered,
 but not \fB/var/backups/etc/etc\-2013\-03\-31.tgz\fP). This prevents accidental
 deletion of files.
 .sp
-This script assumes daily backups are FULL backups, not incremental.
+This script assumes daily backups are FULL backups, not incremental. For
+example, a full daily backup of your \fB/etc\fP can be created by adding
+(\fBcrontab \-e\fP) a command like the following to your crontab(5) file:
+.sp
+.nf
+.ft C
+tar czf /var/backups/etc/etc\-$(date +%F).tgz /etc
+.ft P
+.fi
 .SH OPTIONS
 .INDENT 0.0
 .INDENT 3.5

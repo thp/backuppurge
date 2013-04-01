@@ -91,13 +91,18 @@ January 1st for yearly, but if that is not available, January 2nd will be
 kept, etc..).</p>
 <p>This program can be used together with xargs(1) from GNU findutils:</p>
 <pre class="literal-block">
-backuppurge --print0 /var/backups/ | xargs -0 rm
+backuppurge --print0 /var/backups/ | xargs -r -0 rm
 </pre>
 <p>Only files directly in the specified <strong>DIRECTORY</strong> will be searched (in the
 above example, <tt class="docutils literal"><span class="pre">/var/backups/homedir-2013-03-31.tgz</span></tt> will be considered,
 but not <tt class="docutils literal"><span class="pre">/var/backups/etc/etc-2013-03-31.tgz</span></tt>). This prevents accidental
 deletion of files.</p>
-<p>This script assumes daily backups are FULL backups, not incremental.</p>
+<p>This script assumes daily backups are FULL backups, not incremental. For
+example, a full daily backup of your <tt class="docutils literal">/etc</tt> can be created by adding
+(<tt class="docutils literal">crontab <span class="pre">-e</span></tt>) a command like the following to your crontab(5) file:</p>
+<pre class="literal-block">
+tar czf /var/backups/etc/etc-$(date +%F).tgz /etc
+</pre>
 </div>
 <div class="section" id="options">
 <h1>OPTIONS</h1>
