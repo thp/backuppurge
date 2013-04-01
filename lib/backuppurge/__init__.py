@@ -31,25 +31,25 @@
 Selectively purge daily full backups
 
 Lists files in that should be purged in a backup strategy where daily backups
-are kept for DAYS days, monthly backups for MONTHS months and yearly backups
-for YEARS years. Monthly and yearly backups are always the oldest possible
+are kept for *DAYS* days, monthly backups for *MONTHS* months and yearly backups
+for *YEARS* years. Monthly and yearly backups are always the oldest possible
 daily backup (e.g. first of month and first of year that is available).
 
-Files are expected to have their date embedded as YYYY-MM-DD somewhere in
-the filename, e.g. homedir-2013-03-31.tgz
+Files are expected to have their date embedded as ``YYYY-MM-DD`` somewhere in
+the filename, e.g. ``homedir-2013-03-31.tgz``
 
 For monthly and yearly backups, the first day available will be kept (e.g.
 January 1st for yearly, but if that is not available, January 2nd will be
 kept, etc..).
 
-This program can be used together with xargs(1) from GNU findutils:
+This program can be used together with xargs(1) from GNU findutils::
 
     backuppurge --print0 /var/backups/ | xargs -0 rm
 
-Only files directly in the specified DIRECTORY will be searched (in the
-above example, /var/backups/homedir-2013-03-31.tgz will be considered,
-but not /var/backups/etc/etc-2013-03-31.tgz). This prevents accidental
-deletion of files. For the same reason, DIRECTORY is mandatory.
+Only files directly in the specified **DIRECTORY** will be searched (in the
+above example, ``/var/backups/homedir-2013-03-31.tgz`` will be considered,
+but not ``/var/backups/etc/etc-2013-03-31.tgz``). This prevents accidental
+deletion of files.
 
 This script assumes daily backups are FULL backups, not incremental.
 """
@@ -65,8 +65,9 @@ import re
 import os
 
 __author__ = 'Thomas Perl <m@thp.io>'
-__version__ = '1.0.0'
+__license__ = 'Simplified BSD License'
 __url__ = 'http://thp.io/2013/backuppurge/'
+__version__ = '1.0.1'
 
 
 class MixedFilenames(BaseException):
@@ -88,7 +89,7 @@ def find_backups(directory):
     """
     Find backup files in directory
     """
-    return os.listdir(directory)
+    return filter(os.path.isfile, os.listdir(directory))
 
 
 class PurgeList:

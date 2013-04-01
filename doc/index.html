@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.8.1: http://docutils.sourceforge.net/" />
+<title>backuppurge</title>
+<style type="text/css">
+
+
+body {
+    font-family: sans-serif;
+    max-width: 700px;
+}
+
+a {
+    color: blue;
+}
+
+h1, h2 {
+    font-family: Helvetica, Arial, sans-serif;
+    padding: 4px;
+    font-size: 14pt;
+    background-color: #f0f0f0;
+    color: black;
+    border: thin solid #999;
+}
+
+h2 {
+    font-size: 12pt;
+}
+
+h1.title, h2.subtitle {
+    text-align: center;
+    background-color: inherit;
+    border-width: 0px;
+}
+
+pre {
+    padding: 5px;
+    border: thin #eee solid;
+}
+
+hr {
+    border-width: 0px;
+    border-top: 1px dotted #999;
+}
+
+
+</style>
+</head>
+<body>
+<div class="document" id="backuppurge">
+<h1 class="title">backuppurge</h1>
+
+<p>Selectively purge daily full backups, but keeping some:</p>
+<ul class="simple">
+<li>Keep all daily backups for the last X days</li>
+<li>Keep one daily backup per month for the last Y months</li>
+<li>Keep one yearly backup per year for the last Z years</li>
+</ul>
+<p>Backup file names must have YYYY-MM-DD in their filename somewhere
+(in that format) and must have the same prefix/postfix, e.g.:</p>
+<pre class="literal-block">
+homedir_2013-03-31.tgz
+homedir_2013-03-30.tgz
+...
+</pre>
+<div class="section" id="documentation">
+<h1>Documentation</h1>
+<p>Usage information can be found in the <a class="reference external" href="backuppurge.1.html">manual page</a>.</p>
+</div>
+<div class="section" id="dependencies">
+<h1>Dependencies</h1>
+<ul class="simple">
+<li><a class="reference external" href="http://www.python.org/">Python</a> 3.2 OR Python &gt;= 2.6 with argparse</li>
+<li><em>Optional:</em> <a class="reference external" href="https://pypi.python.org/pypi/nose/">Nose</a> for running unit tests</li>
+<li><em>Optional:</em> <a class="reference external" href="http://docutils.sourceforge.net/">Docutils</a> for updating the documentation</li>
+</ul>
+</div>
+<div class="section" id="running-tests">
+<h1>Running Tests</h1>
+<p>To run the test suite:</p>
+<pre class="literal-block">
+nosetests
+</pre>
+</div>
+<div class="section" id="updating-the-documentation">
+<h1>Updating the documentation</h1>
+<p>To convert the README file to a website and to update the manual page:</p>
+<pre class="literal-block">
+python update_docs.py
+</pre>
+</div>
+<div class="section" id="download">
+<h1>Download</h1>
+<ul class="simple">
+<li>Source tarball: <a class="reference external" href="backuppurge-1.0.1.tar.gz">backuppurge-1.0.1.tar.gz</a></li>
+<li>Development version: <a class="reference external" href="http://github.com/thp/backuppurge/">http://github.com/thp/backuppurge/</a></li>
+</ul>
+</div>
+<div class="section" id="website">
+<h1>Website</h1>
+<p><a class="reference external" href="http://thp.io/2013/backuppurge/">http://thp.io/2013/backuppurge/</a></p>
+</div>
+<div class="section" id="license">
+<h1>License</h1>
+<p>Simplified BSD License</p>
+<hr class="docutils" />
+<p>Thomas Perl | <a class="reference external" href="http://thp.io/about">contact info</a> | <a class="reference external" href="http://thp.io/">thp.io</a> | <a class="reference external" href="http://thp.io/2013/">2013</a></p>
+</div>
+</div>
+</body>
+</html>

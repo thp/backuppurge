@@ -31,12 +31,19 @@
 import logging
 import argparse
 
+import sys
+import os.path
+
+# Insert "lib" to path if we are running from a source checkout
+prefix, bindir = os.path.split(os.path.dirname(os.path.abspath(sys.argv[0])))
+if bindir != 'bin':
+    sys.path.insert(0, os.path.join(prefix, bindir, 'lib'))
+
 import backuppurge
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description=backuppurge.__doc__.strip(),
-            formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser()
 
     parser.add_argument('DIRECTORY', type=str,
             help='Directory to look for backup files')
@@ -47,7 +54,7 @@ if __name__ == '__main__':
     parser.add_argument('-y', '--years', default=5, type=int,
             help='Number of years to keep (0 to disable)')
     parser.add_argument('-0', '--print0', action='store_true', default=False,
-            help='Output filenames separated by NUL')
+            help='Output filenames separated by NUL (for use with xargs)')
     parser.add_argument('-V', '--verbose', action='store_true', default=False,
             help='Verbose output of decisions to stderr')
     parser.add_argument('-v', '--version', action='version',

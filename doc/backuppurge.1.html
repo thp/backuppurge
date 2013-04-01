@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.8.1: http://docutils.sourceforge.net/" />
+<title>backuppurge</title>
+<meta name="author" content="Thomas Perl &lt;m&#64;thp.io&gt;" />
+<meta name="date" content="2013-04-01" />
+<meta name="copyright" content="Simplified BSD License" />
+<style type="text/css">
+
+
+body {
+    font-family: sans-serif;
+    max-width: 700px;
+}
+
+a {
+    color: blue;
+}
+
+h1, h2 {
+    font-family: Helvetica, Arial, sans-serif;
+    padding: 4px;
+    font-size: 14pt;
+    background-color: #f0f0f0;
+    color: black;
+    border: thin solid #999;
+}
+
+h2 {
+    font-size: 12pt;
+}
+
+h1.title, h2.subtitle {
+    text-align: center;
+    background-color: inherit;
+    border-width: 0px;
+}
+
+pre {
+    padding: 5px;
+    border: thin #eee solid;
+}
+
+hr {
+    border-width: 0px;
+    border-top: 1px dotted #999;
+}
+
+
+</style>
+</head>
+<body>
+<div class="document" id="backuppurge">
+<h1 class="title">backuppurge</h1>
+<h2 class="subtitle" id="selectively-purge-daily-full-backups">Selectively purge daily full backups</h2>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr><th class="docinfo-name">Author:</th>
+<td>Thomas Perl &lt;<a class="reference external" href="mailto:m&#64;thp.io">m&#64;thp.io</a>&gt;</td></tr>
+<tr><th class="docinfo-name">Date:</th>
+<td>2013-04-01</td></tr>
+<tr><th class="docinfo-name">Copyright:</th>
+<td>Simplified BSD License</td></tr>
+<tr><th class="docinfo-name">Version:</th>
+<td>1.0.1</td></tr>
+<tr class="field"><th class="docinfo-name">Manual section:</th><td class="field-body">1</td>
+</tr>
+<tr class="field"><th class="docinfo-name">Manual group:</th><td class="field-body">Command-line utilities</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="synopsis">
+<h1>SYNOPSIS</h1>
+<p>backuppurge [-h] [-d DAYS] [-m MONTHS] [-y YEARS] [-0] [-V] [-v] DIRECTORY</p>
+</div>
+<div class="section" id="description">
+<h1>DESCRIPTION</h1>
+<p>Lists files in that should be purged in a backup strategy where daily backups
+are kept for <em>DAYS</em> days, monthly backups for <em>MONTHS</em> months and yearly backups
+for <em>YEARS</em> years. Monthly and yearly backups are always the oldest possible
+daily backup (e.g. first of month and first of year that is available).</p>
+<p>Files are expected to have their date embedded as <tt class="docutils literal"><span class="pre">YYYY-MM-DD</span></tt> somewhere in
+the filename, e.g. <tt class="docutils literal"><span class="pre">homedir-2013-03-31.tgz</span></tt></p>
+<p>For monthly and yearly backups, the first day available will be kept (e.g.
+January 1st for yearly, but if that is not available, January 2nd will be
+kept, etc..).</p>
+<p>This program can be used together with xargs(1) from GNU findutils:</p>
+<pre class="literal-block">
+backuppurge --print0 /var/backups/ | xargs -0 rm
+</pre>
+<p>Only files directly in the specified <strong>DIRECTORY</strong> will be searched (in the
+above example, <tt class="docutils literal"><span class="pre">/var/backups/homedir-2013-03-31.tgz</span></tt> will be considered,
+but not <tt class="docutils literal"><span class="pre">/var/backups/etc/etc-2013-03-31.tgz</span></tt>). This prevents accidental
+deletion of files.</p>
+<p>This script assumes daily backups are FULL backups, not incremental.</p>
+</div>
+<div class="section" id="options">
+<h1>OPTIONS</h1>
+<blockquote>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-d <var>DAYS</var></span>, <span class="option">--days <var>DAYS</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Number of days to keep</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-m <var>MONTHS</var></span>, <span class="option">--months <var>MONTHS</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Number of months to keep (0 to disable)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-y <var>YEARS</var></span>, <span class="option">--years <var>YEARS</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Number of years to keep (0 to disable)</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-0</span>, <span class="option">--print0</span></kbd></td>
+<td>Output filenames separated by NUL (for use with xargs)</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-V</span>, <span class="option">--verbose</span></kbd></td>
+<td>Verbose output of decisions to stderr</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-v</span>, <span class="option">--version</span></kbd></td>
+<td>show version number and exit</td></tr>
+</tbody>
+</table>
+</blockquote>
+</div>
+<div class="section" id="website">
+<h1>WEBSITE</h1>
+<p><a class="reference external" href="http://thp.io/2013/backuppurge/">http://thp.io/2013/backuppurge/</a></p>
+</div>
+</div>
+</body>
+</html>

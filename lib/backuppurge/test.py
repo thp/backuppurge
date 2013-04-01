@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+# Unit tests for backuppurge
 
 from __future__ import print_function
 
