@@ -44,7 +44,7 @@ kept, etc..).
 
 This program can be used together with xargs(1) from GNU findutils::
 
-    backuppurge --print0 /var/backups/ | xargs -0 rm
+    backuppurge --print0 /var/backups/ | xargs -r -0 rm
 
 Only files directly in the specified **DIRECTORY** will be searched (in the
 above example, ``/var/backups/homedir-2013-03-31.tgz`` will be considered,
