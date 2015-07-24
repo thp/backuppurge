@@ -3,10 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.8.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
 <title>backuppurge</title>
 <meta name="author" content="Thomas Perl &lt;m&#64;thp.io&gt;" />
-<meta name="date" content="2013-04-01" />
+<meta name="date" content="2015-07-24" />
 <meta name="copyright" content="Simplified BSD License" />
 <style type="text/css">
 
@@ -63,11 +63,11 @@ hr {
 <tr><th class="docinfo-name">Author:</th>
 <td>Thomas Perl &lt;<a class="reference external" href="mailto:m&#64;thp.io">m&#64;thp.io</a>&gt;</td></tr>
 <tr><th class="docinfo-name">Date:</th>
-<td>2013-04-01</td></tr>
+<td>2015-07-24</td></tr>
 <tr><th class="docinfo-name">Copyright:</th>
 <td>Simplified BSD License</td></tr>
 <tr><th class="docinfo-name">Version:</th>
-<td>1.0.2</td></tr>
+<td>1.0.3</td></tr>
 <tr class="field"><th class="docinfo-name">Manual section:</th><td class="field-body">1</td>
 </tr>
 <tr class="field"><th class="docinfo-name">Manual group:</th><td class="field-body">Command-line utilities</td>
@@ -76,7 +76,7 @@ hr {
 </table>
 <div class="section" id="synopsis">
 <h1>SYNOPSIS</h1>
-<p>backuppurge [-h] [-d DAYS] [-m MONTHS] [-y YEARS] [-0] [-V] [-v] DIRECTORY</p>
+<p>backuppurge [-h] [-d DAYS] [-m MONTHS] [-y YEARS] [-0] [-D] [-V] [-v] DIRECTORY</p>
 </div>
 <div class="section" id="description">
 <h1>DESCRIPTION</h1>
@@ -96,7 +96,9 @@ backuppurge --print0 /var/backups/ | xargs -r -0 rm
 <p>Only files directly in the specified <strong>DIRECTORY</strong> will be searched (in the
 above example, <tt class="docutils literal"><span class="pre">/var/backups/homedir-2013-03-31.tgz</span></tt> will be considered,
 but not <tt class="docutils literal"><span class="pre">/var/backups/etc/etc-2013-03-31.tgz</span></tt>). This prevents accidental
-deletion of files.</p>
+deletion of files. If --include-directories (-D) is used, directories directly
+below the path will be included in the search (e.g. the directory
+<tt class="docutils literal"><span class="pre">/var/backups/etc-2015-07-24/</span></tt> will be included in the purge search).</p>
 <p>This script assumes daily backups are FULL backups, not incremental. For
 example, a full daily backup of your <tt class="docutils literal">/etc</tt> can be created by adding
 (<tt class="docutils literal">crontab <span class="pre">-e</span></tt>) a command like the following to your crontab(5) file:</p>
@@ -129,6 +131,10 @@ tar czf /var/backups/etc/etc-$(date +%F).tgz /etc
 <tr><td class="option-group">
 <kbd><span class="option">-0</span>, <span class="option">--print0</span></kbd></td>
 <td>Output filenames separated by NUL (for use with xargs)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-D</span>, <span class="option">--include-directories</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Include directories when searching for backups</td></tr>
 <tr><td class="option-group">
 <kbd><span class="option">-V</span>, <span class="option">--verbose</span></kbd></td>
 <td>Verbose output of decisions to stderr</td></tr>
