@@ -49,7 +49,9 @@ This program can be used together with xargs(1) from GNU findutils::
 Only files directly in the specified **DIRECTORY** will be searched (in the
 above example, ``/var/backups/homedir-2013-03-31.tgz`` will be considered,
 but not ``/var/backups/etc/etc-2013-03-31.tgz``). This prevents accidental
-deletion of files.
+deletion of files. If --include-directories (-D) is used, directories directly
+below the path will be included in the search (e.g. the directory
+``/var/backups/etc-2015-07-24/`` will be included in the purge search).
 
 This script assumes daily backups are FULL backups, not incremental. For
 example, a full daily backup of your ``/etc`` can be created by adding
@@ -89,12 +91,12 @@ class NoBackupsFound(Warning):
     pass
 
 
-def find_backups(directory):
+def find_backups(directory, include_directories):
     """
     Find backup files in directory
     """
-    return filter(os.path.isfile, map(lambda filename:
-        os.path.join(directory, filename), os.listdir(directory)))
+    return filter(lambda f: (include_directories and os.path.isdir(f)) or os.path.isfile(f),
+                  map(lambda filename: os.path.join(directory, filename), os.listdir(directory)))
 
 
 class PurgeList:
@@ -204,9 +206,9 @@ class PurgeList:
         return self.purge
 
 
-def main(directory, days, months, years, separator):
+def main(directory, days, months, years, separator, include_directories):
     today = datetime.date.today()
-    filenames = find_backups(directory)
+    filenames = find_backups(directory, include_directories)
 
     purge_list = PurgeList(filenames, today)
     purge_list.keep_daily(days)
