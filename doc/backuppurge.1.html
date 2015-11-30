@@ -6,7 +6,7 @@
 <meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
 <title>backuppurge</title>
 <meta name="author" content="Thomas Perl &lt;m&#64;thp.io&gt;" />
-<meta name="date" content="2015-07-24" />
+<meta name="date" content="2015-11-30" />
 <meta name="copyright" content="Simplified BSD License" />
 <style type="text/css">
 
@@ -63,11 +63,11 @@ hr {
 <tr><th class="docinfo-name">Author:</th>
 <td>Thomas Perl &lt;<a class="reference external" href="mailto:m&#64;thp.io">m&#64;thp.io</a>&gt;</td></tr>
 <tr><th class="docinfo-name">Date:</th>
-<td>2015-07-24</td></tr>
+<td>2015-11-30</td></tr>
 <tr><th class="docinfo-name">Copyright:</th>
 <td>Simplified BSD License</td></tr>
 <tr><th class="docinfo-name">Version:</th>
-<td>1.0.3</td></tr>
+<td>1.0.4</td></tr>
 <tr class="field"><th class="docinfo-name">Manual section:</th><td class="field-body">1</td>
 </tr>
 <tr class="field"><th class="docinfo-name">Manual group:</th><td class="field-body">Command-line utilities</td>
@@ -76,7 +76,7 @@ hr {
 </table>
 <div class="section" id="synopsis">
 <h1>SYNOPSIS</h1>
-<p>backuppurge [-h] [-d DAYS] [-m MONTHS] [-y YEARS] [-0] [-D] [-V] [-v] DIRECTORY</p>
+<p>backuppurge [-h] [-d DAYS] [-m MONTHS] [-y YEARS] [-0] [-D] [-p PREFIX] [-V] [-v] DIRECTORY</p>
 </div>
 <div class="section" id="description">
 <h1>DESCRIPTION</h1>
@@ -135,6 +135,10 @@ tar czf /var/backups/etc/etc-$(date +%F).tgz /etc
 <kbd><span class="option">-D</span>, <span class="option">--include-directories</span></kbd></td>
 </tr>
 <tr><td>&nbsp;</td><td>Include directories when searching for backups</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-p <var>PREFIX</var></span>, <span class="option">--prefix <var>PREFIX</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Specify prefix to use if multiple prefixes are found</td></tr>
 <tr><td class="option-group">
 <kbd><span class="option">-V</span>, <span class="option">--verbose</span></kbd></td>
 <td>Verbose output of decisions to stderr</td></tr>

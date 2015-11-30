@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH BACKUPPURGE 1 "2015-07-24" "1.0.3" "Command-line utilities"
+.TH BACKUPPURGE 1 "2015-11-30" "1.0.4" "Command-line utilities"
 .SH NAME
 backuppurge \- Selectively purge daily full backups
 .
@@ -32,7 +32,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 ..
 .SH SYNOPSIS
 .sp
-backuppurge [\-h] [\-d DAYS] [\-m MONTHS] [\-y YEARS] [\-0] [\-D] [\-V] [\-v] DIRECTORY
+backuppurge [\-h] [\-d DAYS] [\-m MONTHS] [\-y YEARS] [\-0] [\-D] [\-p PREFIX] [\-V] [\-v] DIRECTORY
 .SH DESCRIPTION
 .sp
 Lists files in that should be purged in a backup strategy where daily backups
@@ -101,6 +101,9 @@ Output filenames separated by NUL (for use with xargs)
 .TP
 .B \-D\fP,\fB  \-\-include\-directories
 Include directories when searching for backups
+.TP
+.BI \-p \ PREFIX\fP,\fB \ \-\-prefix \ PREFIX
+Specify prefix to use if multiple prefixes are found
 .TP
 .B \-V\fP,\fB  \-\-verbose
 Verbose output of decisions to stderr
