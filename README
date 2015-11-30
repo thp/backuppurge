@@ -27,7 +27,7 @@ Usage information can be found in the `manual page`_.
 Dependencies
 ------------
 
-* Python_ 3.2 OR Python >= 2.6 with argparse
+* Python_ 3.2 OR Python >= 2.7 with argparse
 * *Optional:* Nose_ for running unit tests
 * *Optional:* Docutils_ for updating the documentation
 
