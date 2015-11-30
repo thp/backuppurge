@@ -90,6 +90,8 @@ class NoBackupsFound(Warning):
     """
     pass
 
+warnings.simplefilter('always', NoBackupsFound)
+
 
 def find_backups(directory, include_directories):
     """
@@ -100,11 +102,12 @@ def find_backups(directory, include_directories):
 
 
 class PurgeList:
-    def __init__(self, filenames, today):
+    def __init__(self, filenames, today, prefix):
         self.logger = logging.getLogger(self.__class__.__name__)
 
         self.filenames = filenames
         self.today = today
+        self.prefix = prefix
 
         # Check prefix of files (before date), bail out if not all equal
         self.check_file_list()
@@ -117,6 +120,10 @@ class PurgeList:
 
         # Remove all filenames without a date string in them
         self.filenames = list(filter(regex.match, self.filenames))
+
+        if self.prefix is not None:
+            self.filenames = [filename for filename in self.filenames
+                              if regex.match(filename).group(1) == self.prefix]
 
         if len(self.filenames) == 0:
             warnings.warn('File list is empty', NoBackupsFound)
@@ -206,11 +213,11 @@ class PurgeList:
         return self.purge
 
 
-def main(directory, days, months, years, separator, include_directories):
+def main(directory, days, months, years, separator, include_directories, prefix):
     today = datetime.date.today()
     filenames = find_backups(directory, include_directories)
 
-    purge_list = PurgeList(filenames, today)
+    purge_list = PurgeList(filenames, today, prefix)
     purge_list.keep_daily(days)
     purge_list.keep_monthly(months)
     purge_list.keep_yearly(years)
