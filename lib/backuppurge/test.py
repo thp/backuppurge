@@ -5,7 +5,6 @@ from __future__ import print_function
 
 from nose.tools import *
 
-import warnings
 import datetime
 
 import backuppurge
@@ -27,8 +26,9 @@ def test_last30days():
     """
     filenames = FixtureData.get_filenames()
     today = FixtureData.TODAY
+    prefix = None
 
-    purge_list = backuppurge.PurgeList(filenames, today)
+    purge_list = backuppurge.PurgeList(filenames, today, prefix)
     purge_list.keep_daily(30)
 
     purge_set = purge_list.get_filenames()
@@ -61,8 +61,9 @@ def test_last6months():
     """
     filenames = FixtureData.get_filenames()
     today = FixtureData.TODAY
+    prefix = None
 
-    purge_list = backuppurge.PurgeList(filenames, today)
+    purge_list = backuppurge.PurgeList(filenames, today, prefix)
     purge_list.keep_monthly(6)
 
     purge_set = purge_list.get_filenames()
@@ -83,8 +84,9 @@ def test_last2years():
     """
     filenames = FixtureData.get_filenames()
     today = FixtureData.TODAY
+    prefix = None
 
-    purge_list = backuppurge.PurgeList(filenames, today)
+    purge_list = backuppurge.PurgeList(filenames, today, prefix)
     purge_list.keep_yearly(2)
 
     purge_set = purge_list.get_filenames()
@@ -103,8 +105,9 @@ def test_days_months_and_years():
     """
     filenames = FixtureData.get_filenames()
     today = FixtureData.TODAY
+    prefix = None
 
-    purge_list = backuppurge.PurgeList(filenames, today)
+    purge_list = backuppurge.PurgeList(filenames, today, prefix)
     purge_list.keep_daily(5)
     purge_list.keep_monthly(3)
     purge_list.keep_yearly(2)
@@ -137,6 +140,7 @@ def test_yearly_takes_first_available():
 
     filenames = FixtureData.get_filenames()
     today = FixtureData.TODAY
+    prefix = None
 
     # Simulate missing backups for January 1st - January 9th
     filenames.remove('backup-2013-01-01.tar.gz')
@@ -149,7 +153,7 @@ def test_yearly_takes_first_available():
     filenames.remove('backup-2013-01-08.tar.gz')
     filenames.remove('backup-2013-01-09.tar.gz')
 
-    purge_list = backuppurge.PurgeList(filenames, today)
+    purge_list = backuppurge.PurgeList(filenames, today, prefix)
     purge_list.keep_yearly(2)
 
     purge_set = purge_list.get_filenames()
@@ -169,6 +173,7 @@ def test_monthly_takes_first_available():
     """
     filenames = FixtureData.get_filenames()
     today = FixtureData.TODAY
+    prefix = None
 
     # Simulate missing backups for March 1st - March 4th
     filenames.remove('backup-2013-03-01.tar.gz')
@@ -176,7 +181,7 @@ def test_monthly_takes_first_available():
     filenames.remove('backup-2013-03-03.tar.gz')
     filenames.remove('backup-2013-03-04.tar.gz')
 
-    purge_list = backuppurge.PurgeList(filenames, today)
+    purge_list = backuppurge.PurgeList(filenames, today, prefix)
     purge_list.keep_monthly(2)
 
     purge_set = purge_list.get_filenames()
@@ -199,8 +204,9 @@ def test_wrong_prefix_fails():
         'backup-2013-03-21.tar.gz',
     ]
     today = FixtureData.TODAY
+    prefix = None
 
-    purge_list = backuppurge.PurgeList(filenames, today)
+    purge_list = backuppurge.PurgeList(filenames, today, prefix)
 
 @raises(backuppurge.MixedFilenames)
 def test_wrong_postfix_fails():
@@ -212,8 +218,9 @@ def test_wrong_postfix_fails():
         'backup-2013-03-21.tar.bz2',
     ]
     today = FixtureData.TODAY
+    prefix = None
 
-    purge_list = backuppurge.PurgeList(filenames, today)
+    purge_list = backuppurge.PurgeList(filenames, today, prefix)
 
 def test_ignore_nonempty():
     """
@@ -225,27 +232,47 @@ def test_ignore_nonempty():
         'README',
     ]
     today = FixtureData.TODAY
+    prefix = None
 
-    purge_list = backuppurge.PurgeList(filenames, today)
+    purge_list = backuppurge.PurgeList(filenames, today, prefix)
     purge_set = purge_list.get_filenames()
 
     assert '.git' not in purge_set
     assert 'README' not in purge_set
 
-def test_warning_no_backups():
-    """
-    Test that we issue a warning when no backups are found.
-    """
-    filenames = [
-        '.git',
-        'README',
-        'no-backups-here.txt',
+
+def test_multiple_prefixes_when_specifying_prefix():
+    homedirs = [
+        'homedir-2013-03-31.tar.gz',
+        'homedir-2012-12-24.tar.gz',
+        'homedir-2001-08-30.tar.gz',
     ]
+    backups = [
+        'backup-2013-03-21.tar.gz',
+        'backup-2013-01-21.tar.gz',
+        'backup-2001-03-21.tar.gz',
+    ]
+    filenames = homedirs + backups
     today = FixtureData.TODAY
 
-    with warnings.catch_warnings(record=True) as issued_warnings:
-        warnings.resetwarnings()
-        purge_list = backuppurge.PurgeList(filenames, today)
-        assert_equal(len(issued_warnings), 1)
-        assert_equal(issued_warnings[-1].category, backuppurge.NoBackupsFound)
+    prefix_to_expected_keep_set = {
+        'backup-': set(homedirs).union({
+            'backup-2013-03-21.tar.gz',
+        }),
+        'homedir-': set(backups).union({
+            'homedir-2013-03-31.tar.gz',
+        }),
+    }
 
+    def check_with_prefix(prefix, expected_keep_set):
+        purge_list = backuppurge.PurgeList(filenames, today, prefix)
+        purge_list.keep_daily(30)
+        purge_set = purge_list.get_filenames()
+        print('Purge set:', purge_set)
+        keep_set = set(filenames).difference(purge_set)
+        print('Keep set:', keep_set)
+
+        assert_equal(keep_set, expected_keep_set)
+
+    for prefix, expected_keep_set in prefix_to_expected_keep_set.items():
+        yield check_with_prefix, prefix, expected_keep_set
